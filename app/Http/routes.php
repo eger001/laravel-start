@@ -50,3 +50,37 @@ Route::post('/task', function (Request $request) {
 
     return redirect()->route('task.index');
 })->name('task.store');
+
+
+
+Route::delete('/task/{task}', function(Task $task) { #название переменной как название модели!!
+    $task->delete();
+    return redirect()->route('task.index');
+})->name('task.destroy');
+
+
+
+Route::put('/task/{task}', function (Task $task, Request $request) {
+    $validator = Validator::make($request->all(), [
+        'name'=>'required|max:255',
+    ]);
+    #check fails during validation
+    if ($validator->fails()) {
+        return redirect()
+            ->route('task.edit', $task->id)
+            ->withInput()
+            ->withErrors($validator);
+    }
+
+    $task->name = $request->name;
+    $task->save();
+    return redirect()->route('task.index');
+})->name('task.update');
+
+
+
+Route::get('/task/{task}/edit', function (Task $task) {
+    return view('tasks.edit', [
+        'task'=>$task
+    ]);
+})->name('task.edit');
