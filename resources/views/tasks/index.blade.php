@@ -18,7 +18,22 @@
                 <td>{{$task->id}}</td>
                 <td>{{$task->name}}</td>
                 <td>
-                    {{--TODO delete button --}}
+                    <form action="{{route('task.destroy', $task->id) }}" method="POST">
+                        {{ csrf_field() }}
+                        {{ method_field('DELETE') }}
+
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fa fa-trash"></i> Delete
+                        </button>
+                    </form>
+                </td>
+                <td>
+                    <form action="{{route('task.edit', $task->id) }}" method="GET">
+                        {{ csrf_field() }}
+                        <button type="submit" class="btn btn-warning">
+                            <i class="fa fa-pencil"></i> Edit
+                        </button>
+                    </form>
                 </td>
             </tr>
             @endforeach
